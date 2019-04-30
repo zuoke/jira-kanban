@@ -171,7 +171,13 @@ class QueryResultResource(BaseResource):
         allow_executing_with_view_only_permissions = query.parameterized.is_safe
 
         if has_access(query, self.current_user, allow_executing_with_view_only_permissions):
-            return run_query(query.parameterized, parameter_values, query.data_source, query_id, max_age)
+            result = run_query(query.parameterized, parameter_values, query.data_source, query_id, max_age)
+            if 'job' in result:
+                query_task = QueryTask(job_id=result['job']['id'])
+                celery_result = query_task._async_result.wait(timeout=600, interval=1)
+                result = query_task.to_dict()
+
+            return result
         else:
             return {'job': {'status': 4, 'error': 'You do not have permission to run queries with this data source.'}}, 403
 

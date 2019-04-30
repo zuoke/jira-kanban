@@ -172,10 +172,13 @@ class QueryResultResource(BaseResource):
 
         if has_access(query, self.current_user, allow_executing_with_view_only_permissions):
             result = run_query(query.parameterized, parameter_values, query.data_source, query_id, max_age)
-            if 'job' in result:
+            if 'job' in result:  # and params.get('sync'):
                 query_task = QueryTask(job_id=result['job']['id'])
-                celery_result = query_task._async_result.wait(timeout=600, interval=1)
-                result = query_task.to_dict()
+
+                query_result_id = query_task._async_result.wait(timeout=600, interval=1)
+                # todo: load query result here
+
+                result = {'job': query_task.to_dict()}
 
             return result
         else:

@@ -425,6 +425,12 @@ describe('Dashboard', () => {
         const paramName = 'count';
         const queryData = {
           query: `select s.a FROM generate_series(1,{{ ${paramName} }}) AS s(a)`,
+          options: {
+            parameters: [{
+              name: paramName,
+              type: 'text',
+            }],
+          },
         };
 
         beforeEach(function () {
@@ -454,7 +460,7 @@ describe('Dashboard', () => {
           cy.wait('@FreshResults', { timeout: 10000 });
 
           // expect to height to grow by 1 grid grow
-          cy.get('@widget').invoke('height').should('eq', 435);
+          cy.get('@widget').invoke('height').should('eq', 385);
         });
 
         it('revokes auto height after manual height adjustment', () => {

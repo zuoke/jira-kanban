@@ -94,14 +94,14 @@ class BaseQueryRunner(object):
 
     def fetch_columns(self, columns):
         column_names = []
-        duplicates_counters = defaultdict(lambda: 1)
+        duplicates_counters = defaultdict(int)
         new_columns = []
 
         for col in columns:
             column_name = col[0]
-            if column_name in column_names:
-                column_name = "{}{}".format(column_name, duplicates_counters[column_name])
-                duplicates_counters[column_name] += 1
+            while column_name in column_names:
+                duplicates_counters[col[0]] += 1
+                column_name = "{}{}".format(col[0], duplicates_counters[col[0]])
 
             column_names.append(column_name)
             new_columns.append(

@@ -194,6 +194,7 @@ export default function NewDashboardGrid({
                 onLoad={() => onLoadWidget(widget)}
                 onRefresh={() => onRefreshWidget(widget)}
                 onParameterMappingsChange={onParameterMappingsChange}
+                isEditing={isEditing} // make sure it re-renders when isEditing changes
               />
             )}
             {type === WidgetTypeEnum.TEXTBOX && <TextboxWidget {...widgetProps} />}
@@ -205,6 +206,7 @@ export default function NewDashboardGrid({
       autoHeightCtrl,
       dashboard,
       filters,
+      isEditing,
       isPublic,
       onLoadWidget,
       onParameterMappingsChange,

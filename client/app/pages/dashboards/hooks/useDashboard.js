@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { isEmpty, includes, compact, map, has, pick, keys, extend, every, get } from "lodash";
 import notification from "@/services/notification";
 import location from "@/services/location";
@@ -140,7 +140,7 @@ function useDashboard(dashboardData) {
     Dashboard.delete(dashboard).then(updatedDashboard =>
       setDashboard(currentDashboard => extend({}, currentDashboard, pick(updatedDashboard, ["is_archived"])))
     );
-  }, [dashboard]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dashboard]);
 
   const showShareDashboardDialog = useCallback(() => {
     ShareDashboardDialog.showModal({
@@ -181,10 +181,13 @@ function useDashboard(dashboardData) {
   const [fullscreen, toggleFullscreen] = useFullscreenHandler();
   const editModeHandler = useEditModeHandler(!gridDisabled && canEditDashboard, widgets);
 
+  const loadDashboardRef = useRef();
+  loadDashboardRef.current = loadDashboard;
+
   useEffect(() => {
     setDashboard(dashboardData);
-    loadDashboard();
-  }, [dashboardData]); // eslint-disable-line react-hooks/exhaustive-deps
+    loadDashboardRef.current();
+  }, [dashboardData]);
 
   useEffect(() => {
     document.title = dashboard.name;
@@ -192,8 +195,8 @@ function useDashboard(dashboardData) {
 
   // reload dashboard when filter option changes
   useEffect(() => {
-    loadDashboard();
-  }, [dashboard.dashboard_filters_enabled]); // eslint-disable-line react-hooks/exhaustive-deps
+    loadDashboardRef.current();
+  }, [dashboard.dashboard_filters_enabled]);
 
   return {
     dashboard,

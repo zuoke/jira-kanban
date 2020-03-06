@@ -10,7 +10,7 @@ import Icon from "antd/lib/icon";
 import Modal from "antd/lib/modal";
 import Tooltip from "antd/lib/tooltip";
 import routeWithUserSession from "@/components/ApplicationArea/routeWithUserSession";
-import DashboardGrid from "@/components/dashboards/DashboardGrid";
+import DashboardGrid from "@/components/dashboards/NewDashboardGrid";
 import FavoritesControl from "@/components/FavoritesControl";
 import EditInPlace from "@/components/EditInPlace";
 import { DashboardTagsControl } from "@/components/tags-control/TagsControl";

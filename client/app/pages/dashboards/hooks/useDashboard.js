@@ -46,10 +46,9 @@ function useDashboard(dashboardData) {
       (currentUser.id === dashboard.user.id || currentUser.hasPermission("admin")),
     [dashboard]
   );
-  const hasOnlySafeQueries = useMemo(
-    () => every(dashboard.widgets, w => (w.getQuery() ? w.getQuery().is_safe : true)),
-    [dashboard]
-  );
+  const hasOnlySafeQueries = useMemo(() => every(widgets, w => (w.getQuery() ? w.getQuery().is_safe : true)), [
+    widgets,
+  ]);
 
   const managePermissions = useCallback(() => {
     const aclUrl = `api/dashboards/${dashboard.id}/acl`;
@@ -200,6 +199,7 @@ function useDashboard(dashboardData) {
 
   return {
     dashboard,
+    widgets,
     globalParameters,
     refreshing,
     filters,

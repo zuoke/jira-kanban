@@ -33,6 +33,7 @@ function getAffectedWidgets(widgets, updatedParameters = []) {
 
 function useDashboard(dashboardData) {
   const [dashboard, setDashboard] = useState(dashboardData);
+  const [widgets, setWidgets] = useState(dashboardData.widgets);
   const [filters, setFilters] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [gridDisabled, setGridDisabled] = useState(false);
@@ -94,8 +95,8 @@ function useDashboard(dashboardData) {
 
   const loadWidget = useCallback((widget, forceRefresh = false) => {
     widget.getParametersDefs(); // Force widget to read parameters values from URL
-    setDashboard(currentDashboard => extend({}, currentDashboard));
-    return widget.load(forceRefresh).finally(() => setDashboard(currentDashboard => extend({}, currentDashboard)));
+    setWidgets(currentWidgets => [...currentWidgets]);
+    return widget.load(forceRefresh).finally(() => setWidgets(currentWidgets => [...currentWidgets]));
   }, []);
 
   const refreshWidget = useCallback(widget => loadWidget(widget, true), [loadWidget]);
@@ -103,25 +104,25 @@ function useDashboard(dashboardData) {
   const removeWidget = useCallback(
     widgetId => {
       dashboard.widgets = dashboard.widgets.filter(widget => widget.id !== undefined && widget.id !== widgetId);
-      setDashboard(currentDashboard => extend({}, currentDashboard));
+      setWidgets(dashboard.widgets);
     },
-    [dashboard]
+    [dashboard.widgets]
   );
 
   const loadDashboard = useCallback(
     (forceRefresh = false, updatedParameters = []) => {
-      const affectedWidgets = getAffectedWidgets(dashboard.widgets, updatedParameters);
+      const affectedWidgets = getAffectedWidgets(widgets, updatedParameters);
       const loadWidgetPromises = compact(
         affectedWidgets.map(widget => loadWidget(widget, forceRefresh).catch(error => error))
       );
 
       return Promise.all(loadWidgetPromises).then(() => {
-        const queryResults = compact(map(dashboard.widgets, widget => widget.getQueryResult()));
+        const queryResults = compact(map(widgets, widget => widget.getQueryResult()));
         const updatedFilters = collectDashboardFilters(dashboard, queryResults, location.search);
         setFilters(updatedFilters);
       });
     },
-    [dashboard, loadWidget]
+    [dashboard, loadWidget, widgets]
   );
 
   const refreshDashboard = useCallback(
@@ -171,16 +172,14 @@ function useDashboard(dashboardData) {
               widget,
               ...synchronizeWidgetTitles(widget.options.parameterMappings, dashboard.widgets),
             ];
-            return Promise.all(widgetsToSave.map(w => w.save())).then(() =>
-              setDashboard(currentDashboard => extend({}, currentDashboard))
-            );
+            return Promise.all(widgetsToSave.map(w => w.save())).then(() => setWidgets(dashboard.widgets));
           }),
     }).result.catch(() => {}); // ignore dismiss
   }, [dashboard]);
 
   const [refreshRate, setRefreshRate, disableRefreshRate] = useRefreshRateHandler(refreshDashboard);
   const [fullscreen, toggleFullscreen] = useFullscreenHandler();
-  const editModeHandler = useEditModeHandler(!gridDisabled && canEditDashboard, dashboard.widgets);
+  const editModeHandler = useEditModeHandler(!gridDisabled && canEditDashboard, widgets);
 
   useEffect(() => {
     setDashboard(dashboardData);

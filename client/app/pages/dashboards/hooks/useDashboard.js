@@ -104,6 +104,7 @@ function useDashboard(dashboardData) {
     widgetId => {
       dashboard.widgets = dashboard.widgets.filter(widget => widget.id !== undefined && widget.id !== widgetId);
       setWidgets(dashboard.widgets);
+      setDashboard(currentDashboard => extend({}, currentDashboard));
     },
     [dashboard.widgets]
   );
@@ -153,8 +154,7 @@ function useDashboard(dashboardData) {
   const showAddTextboxDialog = useCallback(() => {
     TextboxDialog.showModal({
       dashboard,
-      onConfirm: text =>
-        dashboard.addWidget(text).then(() => setDashboard(currentDashboard => extend({}, currentDashboard))),
+      onConfirm: text => dashboard.addWidget(text).then(() => setWidgets(dashboard.widgets)),
     }).result.catch(() => {}); // ignore dismiss
   }, [dashboard]);
 
@@ -171,7 +171,10 @@ function useDashboard(dashboardData) {
               widget,
               ...synchronizeWidgetTitles(widget.options.parameterMappings, dashboard.widgets),
             ];
-            return Promise.all(widgetsToSave.map(w => w.save())).then(() => setWidgets(dashboard.widgets));
+            return Promise.all(widgetsToSave.map(w => w.save())).then(() => {
+              setWidgets(dashboard.widgets);
+              setDashboard(currentDashboard => extend({}, currentDashboard));
+            });
           }),
     }).result.catch(() => {}); // ignore dismiss
   }, [dashboard]);

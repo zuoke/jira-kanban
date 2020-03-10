@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import PropTypes from "prop-types";
 import { compact, isEmpty, invoke } from "lodash";
 import { markdown } from "markdown";
@@ -18,6 +18,7 @@ import ExpandedWidgetDialog from "@/components/dashboards/ExpandedWidgetDialog";
 import EditParameterMappingsDialog from "@/components/dashboards/EditParameterMappingsDialog";
 import VisualizationRenderer from "@/visualizations/components/VisualizationRenderer";
 import Widget from "./Widget";
+import { useEffect } from "react";
 
 function visualizationWidgetMenuOptions({ widget, canEditDashboard, onParametersEdit }) {
   const canViewQuery = currentUser.hasPermission("view_query");
@@ -179,7 +180,121 @@ VisualizationWidgetFooter.propTypes = {
 
 VisualizationWidgetFooter.defaultProps = { isPublic: false };
 
-class VisualizationWidget extends React.Component {
+function VisualizationWidget(props) {
+  const {
+    widget,
+    dashboard,
+    filters,
+    isPublic,
+    isLoading,
+    canEdit,
+    onLoad,
+    onRefresh,
+    onDelete,
+    onParameterMappingsChange,
+  } = props;
+  const localParameters = useMemo(() => widget.getLocalParameters(), [widget]);
+  const widgetQueryResult = useMemo(() => !isLoading && widget.getQueryResult(), [isLoading, widget]);
+  const widgetStatus = useMemo(() => widgetQueryResult && widgetQueryResult.getStatus(), [widgetQueryResult]);
+
+  const widgetRef = useRef();
+  widgetRef.current = widget;
+  const onLoadRef = useRef();
+  onLoadRef.current = onLoad;
+  useEffect(() => {
+    recordEvent("view", "query", widgetRef.current.visualization.query.id, { dashboard: true });
+    recordEvent("view", "visualization", widgetRef.current.visualization.id, { dashboard: true });
+    onLoadRef.current();
+  }, []);
+
+  const visualizationNode = useMemo(() => {
+    switch (widgetStatus) {
+      case "failed":
+        return (
+          <div className="body-row-auto scrollbox">
+            {widgetQueryResult.getError() && (
+              <div className="alert alert-danger m-5">
+                Error running query: <strong>{widgetQueryResult.getError()}</strong>
+              </div>
+            )}
+          </div>
+        );
+      case "done":
+        return (
+          <div className="body-row-auto scrollbox">
+            <VisualizationRenderer
+              visualization={widget.visualization}
+              queryResult={widgetQueryResult}
+              filters={filters}
+              context="widget"
+            />
+          </div>
+        );
+      default:
+        return (
+          <div className="body-row-auto spinner-container">
+            <div className="spinner">
+              <i className="zmdi zmdi-refresh zmdi-hc-spin zmdi-hc-5x" />
+            </div>
+          </div>
+        );
+    }
+  }, [filters, widget.visualization, widgetQueryResult, widgetStatus]);
+
+  return (
+    <Widget
+      {...props}
+      className="widget-visualization"
+      menuOptions={visualizationWidgetMenuOptions({
+        widget,
+        canEditDashboard: canEdit,
+        onParametersEdit: () => {},
+      })}
+      header={
+        <VisualizationWidgetHeader
+          widget={widget}
+          refreshStartedAt={isLoading ? widget.refreshStartedAt : null}
+          parameters={localParameters}
+          onParametersUpdate={onRefresh}
+        />
+      }
+      footer={
+        <VisualizationWidgetFooter
+          widget={widget}
+          isPublic={isPublic}
+          onRefresh={onRefresh}
+          onExpand={() => ExpandedWidgetDialog.showModal({ widget: this.props.widget }).result.catch(() => {})}
+        />
+      }
+      tileProps={{ "data-refreshing": isLoading }}>
+      {visualizationNode}
+    </Widget>
+  );
+}
+
+VisualizationWidget.propTypes = {
+  widget: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  dashboard: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  filters: FiltersType,
+  isPublic: PropTypes.bool,
+  canEdit: PropTypes.bool,
+  onLoad: PropTypes.func,
+  onRefresh: PropTypes.func,
+  onDelete: PropTypes.func,
+  onParameterMappingsChange: PropTypes.func,
+};
+
+VisualizationWidget.defaultProps = {
+  filters: [],
+  isPublic: false,
+  canEdit: false,
+  onLoad: () => {},
+  onRefresh: () => {},
+  onDelete: () => {},
+  onParameterMappingsChange: () => {},
+};
+
+class VisualizationWidget2 extends React.Component {
   static propTypes = {
     widget: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     dashboard: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

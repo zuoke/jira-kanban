@@ -33,6 +33,8 @@ const WidgetType = PropTypes.shape({
 const SINGLE = "single-column";
 const MULTI = "multi-column";
 
+const gridMargin = [cfg.margins, cfg.margins];
+
 function normalizeFrom(widget) {
   const {
     id,
@@ -57,6 +59,7 @@ export default function NewDashboardGrid({
   isPublic,
   dashboard,
   widgets,
+  loadingWidgets,
   filters,
   onBreakpointChange: onBreakpointChangeProp,
   onLoadWidget,
@@ -195,6 +198,7 @@ export default function NewDashboardGrid({
                 onRefresh={() => onRefreshWidget(widget)}
                 onParameterMappingsChange={onParameterMappingsChange}
                 isEditing={isEditing} // make sure it re-renders when isEditing changes
+                isLoading={loadingWidgets.has(widget.id)}
               />
             )}
             {type === WidgetTypeEnum.TEXTBOX && <TextboxWidget {...widgetProps} />}
@@ -208,6 +212,7 @@ export default function NewDashboardGrid({
       filters,
       isEditing,
       isPublic,
+      loadingWidgets,
       onLoadWidget,
       onParameterMappingsChange,
       onRefreshWidget,
@@ -222,7 +227,7 @@ export default function NewDashboardGrid({
         className={cx("layout", { "disable-animations": disableAnimations })}
         cols={{ [MULTI]: cfg.columns, [SINGLE]: 1 }}
         rowHeight={cfg.rowHeight - cfg.margins}
-        margin={[cfg.margins, cfg.margins]}
+        margin={gridMargin}
         isDraggable={isEditing}
         isResizable={isEditing}
         onResizeStart={autoHeightCtrl.stop}

@@ -33,6 +33,7 @@ function getAffectedWidgets(widgets, updatedParameters = []) {
 
 function useDashboard(dashboardData) {
   const [dashboard, setDashboard] = useState(dashboardData);
+  const [loadingWidgets, setLoadingWidgets] = useState(new Set());
   const [filters, setFilters] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [gridDisabled, setGridDisabled] = useState(false);
@@ -94,8 +95,15 @@ function useDashboard(dashboardData) {
 
   const loadWidget = useCallback((widget, forceRefresh = false) => {
     widget.getParametersDefs(); // Force widget to read parameters values from URL
-    setDashboard(currentDashboard => extend({}, currentDashboard));
-    return widget.load(forceRefresh).finally(() => setDashboard(currentDashboard => extend({}, currentDashboard)));
+    // setDashboard(currentDashboard => extend({}, currentDashboard));
+    setLoadingWidgets(currentLoadingWidgets => new Set(currentLoadingWidgets).add(widget.id));
+    return widget.load(forceRefresh).finally(() =>
+      setLoadingWidgets(currentLoadingWidgets => {
+        const newLoadingWidgets = new Set(currentLoadingWidgets);
+        newLoadingWidgets.delete(widget.id);
+        return newLoadingWidgets;
+      })
+    );
   }, []);
 
   const refreshWidget = useCallback(widget => loadWidget(widget, true), [loadWidget]);
@@ -198,6 +206,7 @@ function useDashboard(dashboardData) {
 
   return {
     dashboard,
+    loadingWidgets,
     globalParameters,
     refreshing,
     filters,

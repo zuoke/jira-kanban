@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import { isEmpty, includes, compact, map, has, pick, keys, extend, every, get } from "lodash";
 import notification from "@/services/notification";
 import location from "@/services/location";
@@ -39,6 +40,12 @@ function useDashboard(dashboardData) {
   const [gridDisabled, setGridDisabled] = useState(false);
   const globalParameters = useMemo(() => dashboard.getParametersDefs(), [dashboard]);
   const canEditDashboard = !dashboard.is_archived && dashboard.can_edit;
+
+  const currentLoadingWidgetsRef = useRef(loadingWidgets);
+  const [updateLoadingWidgets] = useDebouncedCallback(
+    () => setLoadingWidgets(new Set(currentLoadingWidgetsRef.current)),
+    100
+  );
   const isDashboardOwnerOrAdmin = useMemo(
     () =>
       !dashboard.is_archived &&
@@ -93,18 +100,19 @@ function useDashboard(dashboardData) {
     updateDashboard({ is_draft: !dashboard.is_draft }, false);
   }, [dashboard, updateDashboard]);
 
-  const loadWidget = useCallback((widget, forceRefresh = false) => {
-    widget.getParametersDefs(); // Force widget to read parameters values from URL
-    // setDashboard(currentDashboard => extend({}, currentDashboard));
-    setLoadingWidgets(currentLoadingWidgets => new Set(currentLoadingWidgets).add(widget.id));
-    return widget.load(forceRefresh).finally(() =>
-      setLoadingWidgets(currentLoadingWidgets => {
-        const newLoadingWidgets = new Set(currentLoadingWidgets);
-        newLoadingWidgets.delete(widget.id);
-        return newLoadingWidgets;
-      })
-    );
-  }, []);
+  const loadWidget = useCallback(
+    (widget, forceRefresh = false) => {
+      widget.getParametersDefs(); // Force widget to read parameters values from URL
+      // setDashboard(currentDashboard => extend({}, currentDashboard));
+      currentLoadingWidgetsRef.current.add(widget.id);
+      updateLoadingWidgets();
+      return widget.load(forceRefresh).finally(() => {
+        currentLoadingWidgetsRef.current.delete(widget.id);
+        updateLoadingWidgets();
+      });
+    },
+    [updateLoadingWidgets]
+  );
 
   const refreshWidget = useCallback(widget => loadWidget(widget, true), [loadWidget]);
 

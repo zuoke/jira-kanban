@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { chain, cloneDeep, find } from "lodash";
 import cx from "classnames";
@@ -33,7 +33,7 @@ const WidgetType = PropTypes.shape({
 const SINGLE = "single-column";
 const MULTI = "multi-column";
 
-function DashboardWidget({
+const DashboardWidget = React.memo(function DashboardWidget({
   widget,
   dashboard,
   isLoading,
@@ -46,44 +46,31 @@ function DashboardWidget({
   filters,
 }) {
   const { type } = widget;
-  const onLoad = useCallback(() => onLoadWidget(widget), [onLoadWidget, widget]);
-  const onRefresh = useCallback(() => onRefreshWidget(widget), [onRefreshWidget, widget]);
-  const onDelete = useCallback(() => onRemoveWidget(widget.id), [onRemoveWidget, widget]);
-  return useMemo(() => {
-    if (type === WidgetTypeEnum.VISUALIZATION) {
-      return (
-        <VisualizationWidget
-          widget={widget}
-          dashboard={dashboard}
-          filters={filters}
-          canEdit={canEdit}
-          isPublic={isPublic}
-          isLoading={isLoading}
-          onLoad={onLoad}
-          onRefresh={onRefresh}
-          onDelete={onDelete}
-          onParameterMappingsChange={onParameterMappingsChange}
-        />
-      );
-    }
-    if (type === WidgetTypeEnum.TEXTBOX) {
-      return <TextboxWidget widget={widget} canEdit={canEdit} isPublic={isPublic} onDelete={onDelete} />;
-    }
-    return <RestrictedWidget widget={widget} />;
-  }, [
-    canEdit,
-    dashboard,
-    filters,
-    isLoading,
-    isPublic,
-    onDelete,
-    onLoad,
-    onParameterMappingsChange,
-    onRefresh,
-    type,
-    widget,
-  ]);
-}
+  const onLoad = () => onLoadWidget(widget);
+  const onRefresh = () => onRefreshWidget(widget);
+  const onDelete = () => onRemoveWidget(widget.id);
+
+  if (type === WidgetTypeEnum.VISUALIZATION) {
+    return (
+      <VisualizationWidget
+        widget={widget}
+        dashboard={dashboard}
+        filters={filters}
+        canEdit={canEdit}
+        isPublic={isPublic}
+        isLoading={isLoading}
+        onLoad={onLoad}
+        onRefresh={onRefresh}
+        onDelete={onDelete}
+        onParameterMappingsChange={onParameterMappingsChange}
+      />
+    );
+  }
+  if (type === WidgetTypeEnum.TEXTBOX) {
+    return <TextboxWidget widget={widget} canEdit={canEdit} isPublic={isPublic} onDelete={onDelete} />;
+  }
+  return <RestrictedWidget widget={widget} />;
+});
 
 class DashboardGrid extends React.Component {
   static propTypes = {

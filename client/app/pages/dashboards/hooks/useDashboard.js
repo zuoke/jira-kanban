@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { useDebouncedCallback } from "use-debounce";
 import { isEmpty, includes, compact, map, has, pick, keys, extend, every, get } from "lodash";
 import notification from "@/services/notification";
 import location from "@/services/location";
@@ -16,8 +15,6 @@ import useRefreshRateHandler from "./useRefreshRateHandler";
 import useEditModeHandler from "./useEditModeHandler";
 
 export { DashboardStatusEnum } from "./useEditModeHandler";
-
-const LOADING_WIDGETS_DEBOUNCE_TIME = 100;
 
 function getAffectedWidgets(widgets, updatedParameters = []) {
   return !isEmpty(updatedParameters)
@@ -44,10 +41,7 @@ function useDashboard(dashboardData) {
 
   const [loadingWidgets, setLoadingWidgets] = useState(new Set());
   const loadingWidgetValueRef = useRef(loadingWidgets);
-  const [updateLoadingWidgets] = useDebouncedCallback(
-    () => setLoadingWidgets(new Set(loadingWidgetValueRef.current)),
-    LOADING_WIDGETS_DEBOUNCE_TIME
-  );
+  const updateLoadingWidgets = useCallback(() => setLoadingWidgets(new Set(loadingWidgetValueRef.current)), []);
 
   const isDashboardOwnerOrAdmin = useMemo(
     () =>

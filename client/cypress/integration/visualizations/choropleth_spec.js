@@ -80,9 +80,7 @@ describe("Choropleth", () => {
 
     // Wait for proper initialization of visualization
     cy.wait(500); // eslint-disable-line cypress/no-unnecessary-waiting
-    cy.getByTestId("VisualizationPreview")
-      .find(".map-visualization-container.leaflet-container")
-      .should("exist");
+    cy.getByTestId("VisualizationPreview").find(".map-visualization-container.leaflet-container").should("exist");
 
     // This is unstable and therefore disabled until a better solution is available.
     // const viewportWidth = Cypress.config("viewportWidth");

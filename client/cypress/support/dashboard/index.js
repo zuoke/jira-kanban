@@ -22,9 +22,7 @@ export function createQueryAndAddWidget(dashboardId, queryData = {}, widgetOptio
 export function editDashboard() {
   cy.getByTestId("DashboardMoreButton").click();
 
-  cy.getByTestId("DashboardMoreButtonMenu")
-    .contains("Edit")
-    .click();
+  cy.getByTestId("DashboardMoreButtonMenu").contains("Edit").click();
 }
 
 export function shareDashboard() {

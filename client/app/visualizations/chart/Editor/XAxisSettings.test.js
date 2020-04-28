@@ -33,12 +33,8 @@ describe("Visualizations -> Chart -> Editor -> X-Axis Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.XAxis.Type")
-      .last()
-      .simulate("click");
-    findByTestID(el, "Chart.XAxis.Type.Linear")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.XAxis.Type").last().simulate("click");
+    findByTestID(el, "Chart.XAxis.Type.Linear").last().simulate("click");
   });
 
   test("Changes axis name", done => {
@@ -64,9 +60,7 @@ describe("Visualizations -> Chart -> Editor -> X-Axis Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.XAxis.ShowLabels")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.XAxis.ShowLabels").last().simulate("click");
   });
 
   test("Sets Sort X Values option", done => {
@@ -78,9 +72,7 @@ describe("Visualizations -> Chart -> Editor -> X-Axis Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.XAxis.Sort")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.XAxis.Sort").last().simulate("click");
   });
 
   test("Sets Reverse X Values option", done => {
@@ -92,8 +84,6 @@ describe("Visualizations -> Chart -> Editor -> X-Axis Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.XAxis.Reverse")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.XAxis.Reverse").last().simulate("click");
   });
 });

@@ -37,12 +37,8 @@ describe("Visualizations -> Chart -> Editor -> Y-Axis Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.LeftYAxis.Type")
-      .last()
-      .simulate("click");
-    findByTestID(el, "Chart.LeftYAxis.Type.Category")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.LeftYAxis.Type").last().simulate("click");
+    findByTestID(el, "Chart.LeftYAxis.Type.Category").last().simulate("click");
   });
 
   test("Changes axis name", done => {
@@ -119,9 +115,7 @@ describe("Visualizations -> Chart -> Editor -> Y-Axis Settings", () => {
         done
       );
 
-      findByTestID(el, "Chart.LeftYAxis.Sort")
-        .last()
-        .simulate("click");
+      findByTestID(el, "Chart.LeftYAxis.Sort").last().simulate("click");
     });
 
     test("Sets Reverse Y Values option", done => {
@@ -133,9 +127,7 @@ describe("Visualizations -> Chart -> Editor -> Y-Axis Settings", () => {
         done
       );
 
-      findByTestID(el, "Chart.LeftYAxis.Reverse")
-        .last()
-        .simulate("click");
+      findByTestID(el, "Chart.LeftYAxis.Reverse").last().simulate("click");
     });
   });
 });

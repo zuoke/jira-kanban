@@ -8,9 +8,7 @@ export function expectTagsToContain(tags = []) {
 
 export function typeInTagsSelectAndSave(text) {
   cy.getByTestId("EditTagsDialog").within(() => {
-    cy.get(".ant-select")
-      .find("input")
-      .type(text);
+    cy.get(".ant-select").find("input").type(text);
 
     cy.contains("OK").click();
   });

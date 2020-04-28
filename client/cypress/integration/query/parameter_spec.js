@@ -35,9 +35,7 @@ describe("Parameter", () => {
     });
 
     it("updates the results after clicking Apply", () => {
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .type("Redash");
+      cy.getByTestId("ParameterName-test-parameter").find("input").type("Redash");
 
       cy.getByTestId("ParameterApplyButton").click();
 
@@ -46,9 +44,7 @@ describe("Parameter", () => {
 
     it("sets dirty state when edited", () => {
       expectDirtyStateChange(() => {
-        cy.getByTestId("ParameterName-test-parameter")
-          .find("input")
-          .type("Redash");
+        cy.getByTestId("ParameterName-test-parameter").find("input").type("Redash");
       });
     });
   });
@@ -67,17 +63,13 @@ describe("Parameter", () => {
     });
 
     it("updates the results after clicking Apply", () => {
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .type("{selectall}42");
+      cy.getByTestId("ParameterName-test-parameter").find("input").type("{selectall}42");
 
       cy.getByTestId("ParameterApplyButton").click();
 
       cy.getByTestId("TableVisualization").should("contain", 42);
 
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .type("{selectall}31415");
+      cy.getByTestId("ParameterName-test-parameter").find("input").type("{selectall}31415");
 
       cy.getByTestId("ParameterApplyButton").click();
 
@@ -86,9 +78,7 @@ describe("Parameter", () => {
 
     it("sets dirty state when edited", () => {
       expectDirtyStateChange(() => {
-        cy.getByTestId("ParameterName-test-parameter")
-          .find("input")
-          .type("{selectall}42");
+        cy.getByTestId("ParameterName-test-parameter").find("input").type("{selectall}42");
       });
     });
   });
@@ -109,9 +99,7 @@ describe("Parameter", () => {
     });
 
     it("updates the results after selecting a value", () => {
-      cy.getByTestId("ParameterName-test-parameter")
-        .find(".ant-select")
-        .click();
+      cy.getByTestId("ParameterName-test-parameter").find(".ant-select").click();
 
       cy.contains("li.ant-select-dropdown-menu-item", "value2").click();
 
@@ -131,9 +119,7 @@ describe("Parameter", () => {
         SaveParameterSettings
       `);
 
-      cy.getByTestId("ParameterName-test-parameter")
-        .find(".ant-select")
-        .click();
+      cy.getByTestId("ParameterName-test-parameter").find(".ant-select").click();
 
       // select all unselected options
       cy.get("li.ant-select-dropdown-menu-item").each($option => {
@@ -151,9 +137,7 @@ describe("Parameter", () => {
 
     it("sets dirty state when edited", () => {
       expectDirtyStateChange(() => {
-        cy.getByTestId("ParameterName-test-parameter")
-          .find(".ant-select")
-          .click();
+        cy.getByTestId("ParameterName-test-parameter").find(".ant-select").click();
 
         cy.contains("li.ant-select-dropdown-menu-item", "value2").click();
       });
@@ -230,9 +214,7 @@ describe("Parameter", () => {
           SaveParameterSettings
         `);
 
-        cy.getByTestId("ParameterName-test-parameter")
-          .find(".ant-select")
-          .click();
+        cy.getByTestId("ParameterName-test-parameter").find(".ant-select").click();
 
         // make sure all options are unselected and select all
         cy.get("li.ant-select-dropdown-menu-item").each($option => {
@@ -251,13 +233,9 @@ describe("Parameter", () => {
 
   describe("Date Parameter", () => {
     const selectCalendarDate = date => {
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .click();
+      cy.getByTestId("ParameterName-test-parameter").find("input").click();
 
-      cy.get(".ant-calendar-date-panel")
-        .contains(".ant-calendar-date", date)
-        .click();
+      cy.get(".ant-calendar-date-panel").contains(".ant-calendar-date", date).click();
     };
 
     beforeEach(() => {
@@ -281,7 +259,7 @@ describe("Parameter", () => {
       cy.clock().then(clock => clock.restore());
     });
 
-    it("updates the results after selecting a date", function() {
+    it("updates the results after selecting a date", function () {
       selectCalendarDate("15");
 
       cy.getByTestId("ParameterApplyButton").click();
@@ -289,12 +267,10 @@ describe("Parameter", () => {
       cy.getByTestId("TableVisualization").should("contain", Cypress.moment(this.now).format("15/MM/YY"));
     });
 
-    it("allows picking a dynamic date", function() {
+    it("allows picking a dynamic date", function () {
       cy.getByTestId("DynamicButton").click();
 
-      cy.getByTestId("DynamicButtonMenu")
-        .contains("Today/Now")
-        .click();
+      cy.getByTestId("DynamicButtonMenu").contains("Today/Now").click();
 
       cy.getByTestId("ParameterApplyButton").click();
 
@@ -328,15 +304,10 @@ describe("Parameter", () => {
       cy.clock().then(clock => clock.restore());
     });
 
-    it("updates the results after selecting a date and clicking in ok", function() {
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .as("Input")
-        .click();
+    it("updates the results after selecting a date and clicking in ok", function () {
+      cy.getByTestId("ParameterName-test-parameter").find("input").as("Input").click();
 
-      cy.get(".ant-calendar-date-panel")
-        .contains(".ant-calendar-date", "15")
-        .click();
+      cy.get(".ant-calendar-date-panel").contains(".ant-calendar-date", "15").click();
 
       cy.get(".ant-calendar-ok-btn").click();
 
@@ -345,27 +316,20 @@ describe("Parameter", () => {
       cy.getByTestId("TableVisualization").should("contain", Cypress.moment(this.now).format("YYYY-MM-15 HH:mm"));
     });
 
-    it("shows the current datetime after clicking in Now", function() {
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .as("Input")
-        .click();
+    it("shows the current datetime after clicking in Now", function () {
+      cy.getByTestId("ParameterName-test-parameter").find("input").as("Input").click();
 
-      cy.get(".ant-calendar-date-panel")
-        .contains("Now")
-        .click();
+      cy.get(".ant-calendar-date-panel").contains("Now").click();
 
       cy.getByTestId("ParameterApplyButton").click();
 
       cy.getByTestId("TableVisualization").should("contain", Cypress.moment(this.now).format("YYYY-MM-DD HH:mm"));
     });
 
-    it("allows picking a dynamic date", function() {
+    it("allows picking a dynamic date", function () {
       cy.getByTestId("DynamicButton").click();
 
-      cy.getByTestId("DynamicButtonMenu")
-        .contains("Today/Now")
-        .click();
+      cy.getByTestId("DynamicButtonMenu").contains("Today/Now").click();
 
       cy.getByTestId("ParameterApplyButton").click();
 
@@ -374,31 +338,20 @@ describe("Parameter", () => {
 
     it("sets dirty state when edited", () => {
       expectDirtyStateChange(() => {
-        cy.getByTestId("ParameterName-test-parameter")
-          .find("input")
-          .click();
+        cy.getByTestId("ParameterName-test-parameter").find("input").click();
 
-        cy.get(".ant-calendar-date-panel")
-          .contains("Now")
-          .click();
+        cy.get(".ant-calendar-date-panel").contains("Now").click();
       });
     });
   });
 
   describe("Date Range Parameter", () => {
     const selectCalendarDateRange = (startDate, endDate) => {
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .first()
-        .click();
+      cy.getByTestId("ParameterName-test-parameter").find("input").first().click();
 
-      cy.get(".ant-calendar-date-panel")
-        .contains(".ant-calendar-date", startDate)
-        .click();
+      cy.get(".ant-calendar-date-panel").contains(".ant-calendar-date", startDate).click();
 
-      cy.get(".ant-calendar-date-panel")
-        .contains(".ant-calendar-date", endDate)
-        .click();
+      cy.get(".ant-calendar-date-panel").contains(".ant-calendar-date", endDate).click();
     };
 
     beforeEach(() => {
@@ -422,7 +375,7 @@ describe("Parameter", () => {
       cy.clock().then(clock => clock.restore());
     });
 
-    it("updates the results after selecting a date range", function() {
+    it("updates the results after selecting a date range", function () {
       selectCalendarDateRange("15", "20");
 
       cy.getByTestId("ParameterApplyButton").click();
@@ -434,12 +387,10 @@ describe("Parameter", () => {
       );
     });
 
-    it("allows picking a dynamic date range", function() {
+    it("allows picking a dynamic date range", function () {
       cy.getByTestId("DynamicButton").click();
 
-      cy.getByTestId("DynamicButtonMenu")
-        .contains("Last month")
-        .click();
+      cy.getByTestId("DynamicButtonMenu").contains("Last month").click();
 
       cy.getByTestId("ParameterApplyButton").click();
 
@@ -457,14 +408,9 @@ describe("Parameter", () => {
 
   describe("Apply Changes", () => {
     const expectAppliedChanges = apply => {
-      cy.getByTestId("ParameterName-test-parameter-1")
-        .find("input")
-        .as("Input")
-        .type("Redash");
+      cy.getByTestId("ParameterName-test-parameter-1").find("input").as("Input").type("Redash");
 
-      cy.getByTestId("ParameterName-test-parameter-2")
-        .find("input")
-        .type("Redash");
+      cy.getByTestId("ParameterName-test-parameter-2").find("input").type("Redash");
 
       cy.location("search").should("not.contain", "Redash");
 
@@ -495,10 +441,7 @@ describe("Parameter", () => {
     it("shows and hides according to parameter dirty state", () => {
       cy.getByTestId("ParameterApplyButton").should("not.be", "visible");
 
-      cy.getByTestId("ParameterName-test-parameter-1")
-        .find("input")
-        .as("Param")
-        .type("Redash");
+      cy.getByTestId("ParameterName-test-parameter-1").find("input").as("Param").type("Redash");
 
       cy.getByTestId("ParameterApplyButton").should("be", "visible");
 
@@ -508,21 +451,13 @@ describe("Parameter", () => {
     });
 
     it("updates dirty counter", () => {
-      cy.getByTestId("ParameterName-test-parameter-1")
-        .find("input")
-        .type("Redash");
+      cy.getByTestId("ParameterName-test-parameter-1").find("input").type("Redash");
 
-      cy.getByTestId("ParameterApplyButton")
-        .find(".ant-badge-count p.current")
-        .should("contain", "1");
+      cy.getByTestId("ParameterApplyButton").find(".ant-badge-count p.current").should("contain", "1");
 
-      cy.getByTestId("ParameterName-test-parameter-2")
-        .find("input")
-        .type("Redash");
+      cy.getByTestId("ParameterName-test-parameter-2").find("input").type("Redash");
 
-      cy.getByTestId("ParameterApplyButton")
-        .find(".ant-badge-count p.current")
-        .should("contain", "2");
+      cy.getByTestId("ParameterApplyButton").find(".ant-badge-count p.current").should("contain", "2");
     });
 
     it('applies changes from "Apply Changes" button', () => {
@@ -538,10 +473,7 @@ describe("Parameter", () => {
     });
 
     it('disables "Execute" button', () => {
-      cy.getByTestId("ParameterName-test-parameter-1")
-        .find("input")
-        .as("Input")
-        .type("Redash");
+      cy.getByTestId("ParameterName-test-parameter-1").find("input").as("Input").type("Redash");
       cy.getByTestId("ExecuteButton").should("be.disabled");
 
       cy.get("@Input").clear();
@@ -566,25 +498,20 @@ describe("Parameter", () => {
 
       createQuery(queryData, false).then(({ id }) => cy.visit(`/queries/${id}/source`));
 
-      cy.get(".parameter-block")
-        .first()
-        .invoke("width")
-        .as("paramWidth");
+      cy.get(".parameter-block").first().invoke("width").as("paramWidth");
 
       cy.get("body").type("{alt}D"); // hide schema browser
     });
 
     const dragParam = (paramName, offsetLeft, offsetTop) => {
-      cy.getByTestId(`DragHandle-${paramName}`)
-        .trigger("mouseover")
-        .trigger("mousedown");
+      cy.getByTestId(`DragHandle-${paramName}`).trigger("mouseover").trigger("mousedown");
 
       cy.get(".parameter-dragged .drag-handle")
         .trigger("mousemove", offsetLeft, offsetTop, { force: true })
         .trigger("mouseup", { force: true });
     };
 
-    it("is possible to rearrange parameters", function() {
+    it("is possible to rearrange parameters", function () {
       cy.server();
       cy.route("POST", "api/queries/*").as("QuerySave");
 

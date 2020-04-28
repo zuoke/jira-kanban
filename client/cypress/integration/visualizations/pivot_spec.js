@@ -23,9 +23,7 @@ function createPivotThroughUI(visualizationName, options = {}) {
   cy.getByTestId("NewVisualization").click();
   cy.getByTestId("VisualizationType").click();
   cy.getByTestId("VisualizationType.PIVOT").click();
-  cy.getByTestId("VisualizationName")
-    .clear()
-    .type(visualizationName);
+  cy.getByTestId("VisualizationName").clear().type(visualizationName);
   if (options.hideControls) {
     cy.getByTestId("PivotEditor.HideControls").click();
     cy.getByTestId("VisualizationPreview")
@@ -33,35 +31,27 @@ function createPivotThroughUI(visualizationName, options = {}) {
       .find(".pvtAxisContainer, .pvtRenderer, .pvtVals")
       .should("be.not.visible");
   }
-  cy.getByTestId("VisualizationPreview")
-    .find("table")
-    .should("exist");
-  cy.getByTestId("EditVisualizationDialog")
-    .contains("button", "Save")
-    .click();
+  cy.getByTestId("VisualizationPreview").find("table").should("exist");
+  cy.getByTestId("EditVisualizationDialog").contains("button", "Save").click();
 }
 
 describe("Pivot", () => {
   beforeEach(() => {
     cy.login();
-    createQuery({ name: "Pivot Visualization", query: SQL })
-      .its("id")
-      .as("queryId");
+    createQuery({ name: "Pivot Visualization", query: SQL }).its("id").as("queryId");
   });
 
-  it("creates Pivot with controls", function() {
+  it("creates Pivot with controls", function () {
     cy.visit(`queries/${this.queryId}/source`);
     cy.getByTestId("ExecuteButton").click();
 
     const visualizationName = "Pivot";
     createPivotThroughUI(visualizationName);
 
-    cy.getByTestId("QueryPageVisualizationTabs")
-      .contains("span", visualizationName)
-      .should("exist");
+    cy.getByTestId("QueryPageVisualizationTabs").contains("span", visualizationName).should("exist");
   });
 
-  it("creates Pivot without controls", function() {
+  it("creates Pivot without controls", function () {
     cy.visit(`queries/${this.queryId}/source`);
     cy.getByTestId("ExecuteButton").click();
 
@@ -82,7 +72,7 @@ describe("Pivot", () => {
     });
   });
 
-  it("updates the visualization when results change", function() {
+  it("updates the visualization when results change", function () {
     const options = {
       aggregatorName: "Count",
       data: [], // force it to have a data object, although it shouldn't
@@ -113,7 +103,7 @@ describe("Pivot", () => {
     });
   });
 
-  it("takes a snapshot with different configured Pivots", function() {
+  it("takes a snapshot with different configured Pivots", function () {
     const options = {
       aggregatorName: "Sum",
       controls: { enabled: true },

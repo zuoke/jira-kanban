@@ -178,10 +178,7 @@ class DashboardGrid extends React.Component {
       return;
     }
 
-    const normalized = chain(layouts[MULTI])
-      .keyBy("i")
-      .mapValues(this.normalizeTo)
-      .value();
+    const normalized = chain(layouts[MULTI]).keyBy("i").mapValues(this.normalizeTo).value();
 
     this.props.onLayoutChange(normalized);
   };

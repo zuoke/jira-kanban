@@ -3,9 +3,7 @@ import chroma from "chroma-js";
 import { createNumberFormatter as createFormatter } from "@/lib/value-format";
 
 export function darkenColor(color) {
-  return chroma(color)
-    .darken()
-    .hex();
+  return chroma(color).darken().hex();
 }
 
 export function createNumberFormatter(format, placeholder) {

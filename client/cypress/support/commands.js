@@ -40,11 +40,7 @@ Cypress.Commands.add("clickThrough", (...args) => {
     const click = element =>
       (elements.button ? cy.contains("button", element.trim()) : cy.getByTestId(element.trim())).click();
 
-    names
-      .trim()
-      .split(/\n/)
-      .filter(Boolean)
-      .forEach(click);
+    names.trim().split(/\n/).filter(Boolean).forEach(click);
   });
 
   return undefined;
@@ -52,10 +48,7 @@ Cypress.Commands.add("clickThrough", (...args) => {
 
 Cypress.Commands.add("fillInputs", (elements, { wait = 0 } = {}) => {
   each(elements, (value, testId) => {
-    cy.getByTestId(testId)
-      .filter(":visible")
-      .clear()
-      .type(value);
+    cy.getByTestId(testId).filter(":visible").clear().type(value);
     if (wait > 0) {
       cy.wait(wait); // eslint-disable-line cypress/no-unnecessary-waiting
     }

@@ -114,9 +114,7 @@ function isDataValid(data) {
 export default function initSankey(data) {
   if (!isDataValid(data)) {
     return element => {
-      d3.select(element)
-        .selectAll("*")
-        .remove();
+      d3.select(element).selectAll("*").remove();
     };
   }
 
@@ -124,9 +122,7 @@ export default function initSankey(data) {
   const format = d => d3.format(",.0f")(d); // TODO: editor option ?
 
   return element => {
-    d3.select(element)
-      .selectAll("*")
-      .remove();
+    d3.select(element).selectAll("*").remove();
 
     const margin = {
       top: 10,
@@ -152,17 +148,11 @@ export default function initSankey(data) {
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Set the sankey diagram properties
-    const sankey = d3sankey()
-      .nodeWidth(15)
-      .nodePadding(10)
-      .size([width, height]);
+    const sankey = d3sankey().nodeWidth(15).nodePadding(10).size([width, height]);
 
     const path = sankey.link();
 
-    sankey
-      .nodes(data.nodes)
-      .links(data.links)
-      .layout(0);
+    sankey.nodes(data.nodes).links(data.links).layout(0);
 
     spreadNodes(height, data);
     sankey.relayout();

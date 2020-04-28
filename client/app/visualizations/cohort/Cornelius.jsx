@@ -83,10 +83,7 @@ function formatStageTitle(options, index) {
 
 function formatTimeLabel(options, offset) {
   const interval = momentInterval[options.timeInterval];
-  return options.initialDate
-    .clone()
-    .add(offset, interval)
-    .format(options.timeLabelFormat);
+  return options.initialDate.clone().add(offset, interval).format(options.timeLabelFormat);
 }
 
 function CorneliusHeader({ options, maxRowLength }) {

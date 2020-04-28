@@ -4,7 +4,7 @@ describe("Create Destination", () => {
     cy.visit("/destinations/new");
   });
 
-  it("renders the page and takes a screenshot", function() {
+  it("renders the page and takes a screenshot", function () {
     cy.server();
     cy.route("api/destinations/types").as("DestinationTypesRequest");
 

@@ -156,11 +156,7 @@ export function filterRows(rows, searchTerm, searchColumns) {
       const { prepareData } = initColumn(column);
       return row => {
         const { text } = prepareData(row);
-        return (
-          toString(text)
-            .toUpperCase()
-            .indexOf(searchTerm) >= 0
-        );
+        return toString(text).toUpperCase().indexOf(searchTerm) >= 0;
       };
     });
 

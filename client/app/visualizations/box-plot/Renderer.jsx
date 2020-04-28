@@ -86,27 +86,13 @@ function render(container, data, { xAxisLabel, yAxisLabel }) {
     .width(boxWidth - 2 * margin.inner)
     .height(height)
     .domain([min * 0.99, max * 1.01]);
-  const xAxis = d3.svg
-    .axis()
-    .scale(xscale)
-    .orient("bottom");
+  const xAxis = d3.svg.axis().scale(xscale).orient("bottom");
 
-  const yAxis = d3.svg
-    .axis()
-    .scale(yscale)
-    .orient("left");
+  const yAxis = d3.svg.axis().scale(yscale).orient("left");
 
-  const xLines = d3.svg
-    .axis()
-    .scale(xscale)
-    .tickSize(height)
-    .orient("bottom");
+  const xLines = d3.svg.axis().scale(xscale).tickSize(height).orient("bottom");
 
-  const yLines = d3.svg
-    .axis()
-    .scale(yscale)
-    .tickSize(width)
-    .orient("right");
+  const yLines = d3.svg.axis().scale(yscale).tickSize(width).orient("right");
 
   function barOffset(i) {
     return xscale(columns[i]) + (xscale(columns[1]) - margin.inner) / 2.0;
@@ -139,32 +125,15 @@ function render(container, data, { xAxisLabel, yAxisLabel }) {
     .attr("text-anchor", "middle")
     .text(yAxisLabel);
 
-  plot
-    .append("rect")
-    .attr("class", "grid-background")
-    .attr("width", width)
-    .attr("height", height);
+  plot.append("rect").attr("class", "grid-background").attr("width", width).attr("height", height);
 
-  plot
-    .append("g")
-    .attr("class", "grid")
-    .call(yLines);
+  plot.append("g").attr("class", "grid").call(yLines);
 
-  plot
-    .append("g")
-    .attr("class", "grid")
-    .call(xLines);
+  plot.append("g").attr("class", "grid").call(xLines);
 
-  plot
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", `translate(0,${height})`)
-    .call(xAxis);
+  plot.append("g").attr("class", "x axis").attr("transform", `translate(0,${height})`).call(xAxis);
 
-  plot
-    .append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
+  plot.append("g").attr("class", "y axis").call(yAxis);
 
   plot
     .selectAll(".box")

@@ -4,7 +4,7 @@ import { createDashboard, createQuery } from "../../support/redash-api";
 import { editDashboard, shareDashboard, createQueryAndAddWidget } from "../../support/dashboard";
 
 describe("Dashboard Sharing", () => {
-  beforeEach(function() {
+  beforeEach(function () {
     cy.login();
     createDashboard("Foo Bar").then(({ slug, id }) => {
       this.dashboardId = id;
@@ -12,7 +12,7 @@ describe("Dashboard Sharing", () => {
     });
   });
 
-  it("is possible if all queries are safe", function() {
+  it("is possible if all queries are safe", function () {
     const options = {
       parameters: [
         {
@@ -48,7 +48,7 @@ describe("Dashboard Sharing", () => {
   });
 
   describe("is available to unauthenticated users", () => {
-    it("when there are no parameters", function() {
+    it("when there are no parameters", function () {
       const queryData = {
         query: "select 1",
       };
@@ -66,7 +66,7 @@ describe("Dashboard Sharing", () => {
       });
     });
 
-    it("when there are only safe parameters", function() {
+    it("when there are only safe parameters", function () {
       const queryData = {
         query: "select '{{foo}}'",
         options: {
@@ -93,7 +93,7 @@ describe("Dashboard Sharing", () => {
       });
     });
 
-    it("even when there are suddenly some unsafe parameters", function() {
+    it("even when there are suddenly some unsafe parameters", function () {
       const queryData = {
         query: "select 1",
       };
@@ -137,7 +137,7 @@ describe("Dashboard Sharing", () => {
     });
   });
 
-  it("is not possible if some queries are not safe", function() {
+  it("is not possible if some queries are not safe", function () {
     const options = {
       parameters: [
         {

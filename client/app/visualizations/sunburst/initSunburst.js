@@ -119,18 +119,14 @@ function isDataValid(data) {
 export default function initSunburst(data) {
   if (!isDataValid(data)) {
     return element => {
-      d3.select(element)
-        .selectAll("*")
-        .remove();
+      d3.select(element).selectAll("*").remove();
     };
   }
 
   data = buildHierarchy(data.rows);
 
   return element => {
-    d3.select(element)
-      .selectAll("*")
-      .remove();
+    d3.select(element).selectAll("*").remove();
 
     // svg dimensions
     const width = element.clientWidth;

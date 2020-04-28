@@ -2,7 +2,7 @@ import { createDashboard } from "../../support/redash-api";
 import { expectTagsToContain, typeInTagsSelectAndSave } from "../../support/tags";
 
 describe("Dashboard Tags", () => {
-  beforeEach(function() {
+  beforeEach(function () {
     cy.login();
     createDashboard("Foo Bar").then(({ slug }) => cy.visit(`/dashboard/${slug}`));
   });
@@ -13,9 +13,7 @@ describe("Dashboard Tags", () => {
 
     cy.getByTestId("TagsControl").contains(".label", "Unpublished");
 
-    cy.getByTestId("EditTagsButton")
-      .should("contain", "Add tag")
-      .click();
+    cy.getByTestId("EditTagsButton").should("contain", "Add tag").click();
 
     typeInTagsSelectAndSave("tag1{enter}tag2{enter}tag3{enter}{esc}");
 

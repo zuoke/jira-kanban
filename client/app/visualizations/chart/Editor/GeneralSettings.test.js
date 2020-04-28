@@ -41,12 +41,8 @@ describe("Visualizations -> Chart -> Editor -> General Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.GlobalSeriesType")
-      .last()
-      .simulate("click");
-    findByTestID(el, "Chart.ChartType.pie")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.GlobalSeriesType").last().simulate("click");
+    findByTestID(el, "Chart.ChartType.pie").last().simulate("click");
   });
 
   test("Pie: changes direction", done => {
@@ -58,12 +54,8 @@ describe("Visualizations -> Chart -> Editor -> General Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.PieDirection")
-      .last()
-      .simulate("click");
-    findByTestID(el, "Chart.PieDirection.Clockwise")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.PieDirection").last().simulate("click");
+    findByTestID(el, "Chart.PieDirection.Clockwise").last().simulate("click");
   });
 
   test("Toggles legend", done => {
@@ -105,12 +97,8 @@ describe("Visualizations -> Chart -> Editor -> General Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.Stacking")
-      .last()
-      .simulate("click");
-    findByTestID(el, "Chart.Stacking.Stack")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.Stacking").last().simulate("click");
+    findByTestID(el, "Chart.Stacking.Stack").last().simulate("click");
   });
 
   test("Toggles normalize values to percentage", done => {
@@ -137,12 +125,8 @@ describe("Visualizations -> Chart -> Editor -> General Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.MissingValues")
-      .last()
-      .simulate("click");
-    findByTestID(el, "Chart.MissingValues.Keep")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.MissingValues").last().simulate("click");
+    findByTestID(el, "Chart.MissingValues.Keep").last().simulate("click");
   });
 
   describe("Column mappings should be available", () => {

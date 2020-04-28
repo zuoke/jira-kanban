@@ -57,9 +57,7 @@ describe("Cohort", () => {
 
     // Wait for proper initialization of visualization
     cy.wait(500); // eslint-disable-line cypress/no-unnecessary-waiting
-    cy.getByTestId("VisualizationPreview")
-      .find("table")
-      .should("exist");
+    cy.getByTestId("VisualizationPreview").find("table").should("exist");
     cy.percySnapshot("Visualizations - Cohort (simple)", { widths: [viewportWidth] });
 
     cy.clickThrough(`
@@ -70,9 +68,7 @@ describe("Cohort", () => {
 
     // Wait for proper initialization of visualization
     cy.wait(500); // eslint-disable-line cypress/no-unnecessary-waiting
-    cy.getByTestId("VisualizationPreview")
-      .find("table")
-      .should("exist");
+    cy.getByTestId("VisualizationPreview").find("table").should("exist");
     cy.percySnapshot("Visualizations - Cohort (diagonal)", { widths: [viewportWidth] });
   });
 });

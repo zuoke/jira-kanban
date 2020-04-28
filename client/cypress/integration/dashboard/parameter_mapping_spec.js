@@ -2,7 +2,7 @@ import { createDashboard } from "../../support/redash-api";
 import { createQueryAndAddWidget } from "../../support/dashboard";
 
 describe("Parameter Mapping", () => {
-  beforeEach(function() {
+  beforeEach(function () {
     cy.login();
     createDashboard("Foo Bar")
       .then(({ slug, id }) => {
@@ -30,9 +30,7 @@ describe("Parameter Mapping", () => {
       cy.getByTestId("WidgetDropdownButton").click();
     });
 
-    cy.getByTestId("WidgetDropdownButtonMenu")
-      .contains("Edit Parameters")
-      .click();
+    cy.getByTestId("WidgetDropdownButtonMenu").contains("Edit Parameters").click();
 
     cy.getByTestId(`EditParamMappingButon-${paramName}`).click();
   };
@@ -45,14 +43,12 @@ describe("Parameter Mapping", () => {
     cy.contains("button", "OK").click();
   };
 
-  it("supports widget parameters", function() {
+  it("supports widget parameters", function () {
     // widget parameter mapping is the default for the API
     cy.getByTestId(this.widgetTestId).within(() => {
       cy.getByTestId("TableVisualization").should("contain", "example");
 
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .type("{selectall}Redash");
+      cy.getByTestId("ParameterName-test-parameter").find("input").type("{selectall}Redash");
 
       cy.getByTestId("ParameterApplyButton").click();
 
@@ -62,7 +58,7 @@ describe("Parameter Mapping", () => {
     cy.getByTestId("DashboardParameters").should("not.exist");
   });
 
-  it("supports dashboard parameters", function() {
+  it("supports dashboard parameters", function () {
     openMappingOptions(this.widgetTestId, "test-parameter");
 
     cy.getByTestId("NewDashboardParameterOption").click();
@@ -74,9 +70,7 @@ describe("Parameter Mapping", () => {
     });
 
     cy.getByTestId("DashboardParameters").within(() => {
-      cy.getByTestId("ParameterName-test-parameter")
-        .find("input")
-        .type("{selectall}DashboardParam");
+      cy.getByTestId("ParameterName-test-parameter").find("input").type("{selectall}DashboardParam");
 
       cy.getByTestId("ParameterApplyButton").click();
     });
@@ -86,15 +80,13 @@ describe("Parameter Mapping", () => {
     });
   });
 
-  it("supports static values for parameters", function() {
+  it("supports static values for parameters", function () {
     openMappingOptions(this.widgetTestId, "test-parameter");
 
     cy.getByTestId("StaticValueOption").click();
 
     cy.getByTestId("EditParamMappingPopover").within(() => {
-      cy.getByTestId("ParameterValueInput")
-        .find("input")
-        .type("{selectall}StaticValue");
+      cy.getByTestId("ParameterValueInput").find("input").type("{selectall}StaticValue");
     });
 
     saveMappingOptions();

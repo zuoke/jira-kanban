@@ -33,11 +33,7 @@ describe("Visualizations -> Table -> Editor -> Grid Settings", () => {
       done
     );
 
-    findByTestID(el, "Table.ItemsPerPage")
-      .last()
-      .simulate("click");
-    findByTestID(el, "Table.ItemsPerPage.100")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Table.ItemsPerPage").last().simulate("click");
+    findByTestID(el, "Table.ItemsPerPage.100").last().simulate("click");
   });
 });

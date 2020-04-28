@@ -36,12 +36,8 @@ describe("Visualizations -> Chart -> Editor -> Series Settings", () => {
       done
     );
 
-    findByTestID(el, "Chart.Series.a.Type")
-      .last()
-      .simulate("click");
-    findByTestID(el, "Chart.ChartType.area")
-      .last()
-      .simulate("click");
+    findByTestID(el, "Chart.Series.a.Type").last().simulate("click");
+    findByTestID(el, "Chart.ChartType.area").last().simulate("click");
   });
 
   test("Changes series label", done => {

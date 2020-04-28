@@ -9,9 +9,7 @@ import url from "@/services/url";
 import ErrorMessage from "./ErrorMessage";
 
 function generateRouteKey() {
-  return Math.random()
-    .toString(32)
-    .substr(2);
+  return Math.random().toString(32).substr(2);
 }
 
 export function stripBase(href) {

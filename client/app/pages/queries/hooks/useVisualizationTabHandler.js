@@ -9,7 +9,7 @@ export default function useVisualizationTabHandler(visualizations) {
   useEffect(() => {
     const hashValue = selectedTab !== firstVisualization.id ? `${selectedTab}` : null;
     if (location.hash !== hashValue) {
-      location.setHash(hashValue);
+      // location.setHash(hashValue);
     }
 
     const unlisten = location.listen(() => {

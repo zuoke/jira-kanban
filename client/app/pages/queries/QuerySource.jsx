@@ -50,7 +50,7 @@ function chooseDataSourceId(dataSourceIds, availableDataSources) {
   return find(dataSourceIds, id => includes(availableDataSources, id)) || null;
 }
 
-function QuerySource(props) {
+export function QuerySource(props) {
   const { query, setQuery, isDirty, saveQuery } = useQuery(props.query);
   const { dataSourcesLoaded, dataSources, dataSource } = useQueryDataSources(query);
   const [schema, refreshSchema] = useDataSourceSchema(dataSource);

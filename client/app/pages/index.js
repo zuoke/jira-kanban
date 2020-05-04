@@ -17,6 +17,7 @@ import groupsDataSourcesRoutes from "./groups/GroupDataSources";
 import groupsMembersRoutes from "./groups/GroupMembers";
 import homeRoutes from "./home/Home";
 import querySourceRoutes from "./queries/QuerySource";
+import queryTabsRoutes from "./queries/QueryTabs";
 import queryViewRoutes from "./queries/QueryView";
 import visualizationEmbedRoutes from "./queries/VisualizationEmbed";
 import queriesListRoutes from "./queries-list/QueriesList";
@@ -43,6 +44,7 @@ export default flatten([
   groupsMembersRoutes,
   homeRoutes,
   queriesListRoutes,
+  queryTabsRoutes,
   queryViewRoutes,
   querySourceRoutes,
   visualizationEmbedRoutes,

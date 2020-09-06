@@ -180,15 +180,20 @@ class QueryResult {
       });
 
       this.deferred.resolve(this);
-    } else if (this.job.status === 3 || this.job.status === 2) {
-      this.deferred.onStatusChange(ExecutionStatus.PROCESSING);
-      this.status = "processing";
-    } else if (this.job.status === 4) {
-      this.status = statuses[this.job.status];
-      this.deferred.reject(new QueryResultError(this.job.error));
     } else {
-      this.deferred.onStatusChange(undefined);
-      this.status = undefined;
+      this.job.enqueued_at = moment.utc(this.job.enqueued_at);
+      this.job.updated_at = moment.utc(this.job.updated_at);
+
+      if (this.job.status === 3 || this.job.status === 2) {
+        this.deferred.onStatusChange(ExecutionStatus.PROCESSING);
+        this.status = "processing";
+      } else if (this.job.status === 4) {
+        this.status = statuses[this.job.status];
+        this.deferred.reject(new QueryResultError(this.job.error));
+      } else {
+        this.deferred.onStatusChange(undefined);
+        this.status = undefined;
+      }
     }
   }
 
@@ -229,7 +234,7 @@ class QueryResult {
   }
 
   getUpdatedAt() {
-    return this.query_result.retrieved_at || this.job.updated_at * 1000.0 || this.updatedAt;
+    return this.query_result.retrieved_at || this.job.enqueued_at || this.job.updated_at * 1000.0 || this.updatedAt;
   }
 
   getRuntime() {

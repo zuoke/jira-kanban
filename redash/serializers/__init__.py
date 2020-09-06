@@ -332,6 +332,7 @@ def serialize_job(job):
         "job": {
             "id": job.id,
             "updated_at": updated_at,
+            "enqueued_at": job.enqueued_at,
             "status": status,
             "error": error,
             "result": result,

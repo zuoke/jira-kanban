@@ -55,6 +55,7 @@ export const ExecutionStatus = {
   DONE: "done",
   FAILED: "failed",
   LOADING_RESULT: "loading-result",
+  SUBMITTED: "submitted",
 };
 
 const statuses = {
@@ -118,7 +119,7 @@ class QueryResult {
     this.deferred = defer();
     this.job = {};
     this.query_result = {};
-    this.status = "waiting";
+    this.status = ExecutionStatus.SUBMITTED;
 
     this.updatedAt = moment();
 

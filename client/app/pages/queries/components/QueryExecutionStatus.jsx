@@ -4,28 +4,32 @@ import PropTypes from "prop-types";
 import Alert from "antd/lib/alert";
 import Button from "antd/lib/button";
 import Timer from "@/components/Timer";
+import { ExecutionStatus } from "@/services/query-result";
 
 export default function QueryExecutionStatus({ status, updatedAt, error, isCancelling, onCancel }) {
-  const alertType = status === "failed" ? "error" : "info";
-  const showTimer = status !== "failed" && updatedAt;
-  const isCancelButtonAvailable = includes(["waiting", "processing"], status);
+  const alertType = status === ExecutionStatus.FAILED ? "error" : "info";
+  const showTimer = status !== ExecutionStatus.FAILED && updatedAt;
+  const isCancelButtonAvailable = includes([ExecutionStatus.WAITING, ExecutionStatus.PROCESSING], status);
   let message = isCancelling ? <React.Fragment>Cancelling&hellip;</React.Fragment> : null;
 
   switch (status) {
-    case "waiting":
+    case ExecutionStatus.SUBMITTED:
+      message = <React.Fragment>Query submitted&hellip;</React.Fragment>;
+      break;
+    case ExecutionStatus.WAITING:
       if (!isCancelling) {
         message = <React.Fragment>Query in queue&hellip;</React.Fragment>;
       }
       break;
-    case "processing":
+    case ExecutionStatus.PROCESSING:
       if (!isCancelling) {
         message = <React.Fragment>Executing query&hellip;</React.Fragment>;
       }
       break;
-    case "loading-result":
+    case ExecutionStatus.LOADING_RESULT:
       message = <React.Fragment>Loading results&hellip;</React.Fragment>;
       break;
-    case "failed":
+    case ExecutionStatus.FAILED:
       message = (
         <React.Fragment>
           Error running query: <strong>{error}</strong>
